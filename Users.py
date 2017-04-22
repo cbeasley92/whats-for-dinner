@@ -39,6 +39,8 @@ class User(Resource):
 
     def post(self, username):
         data = request.get_json(force=True)
+        if type(data) == str:
+            data = json.loads(data)
         self.db.users.replace_one({'username': username}, data, upsert=True)
         print 'Data: %s' % data
         return json.dumps({"results": list(self.db.users.find(data))})
